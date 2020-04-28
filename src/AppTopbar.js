@@ -1,16 +1,19 @@
 import React, {Component} from 'react';
 import {InputText} from 'primereact/inputtext';
 import PropTypes from 'prop-types';
+import GoogleApi from "./components/apis/GoogleApi";
+import {connect} from "react-redux";
+import {signState} from "./actions";
 
 export class AppTopbar extends Component {
 
     static defaultProps = {
         onToggleMenu: null
-    }
+    };
 
     static propTypes = {
         onToggleMenu: PropTypes.func.isRequired
-    }
+    };
 
     render() {
         return (
@@ -32,12 +35,22 @@ export class AppTopbar extends Component {
                         <span className="layout-topbar-item-text">Settings</span>
                         <span className="layout-topbar-icon pi pi-cog"/>
                     </button>
-                    <button className="p-link">
-                        <span className="layout-topbar-item-text">User</span>
-                        <span className="layout-topbar-icon pi pi-user"/>
-                    </button>
+                    <GoogleApi/>
+                    {/*<button className="p-link">*/}
+                    {/*    <span className="layout-topbar-item-text">User</span>*/}
+                    {/*    <span className="layout-topbar-icon pi pi-sign-in"/>*/}
+                    {/*</button>*/}
                 </div>
             </div>
         );
     }
 }
+
+const mapStateToProps = (state) => {
+    return {loginGoogle: state.loginGoogle}
+};
+
+export default connect(
+    mapStateToProps,
+    {signState}
+)(AppTopbar);

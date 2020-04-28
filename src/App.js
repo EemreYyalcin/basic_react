@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import classNames from 'classnames';
-import {AppTopbar} from './AppTopbar';
+import AppTopbar from './AppTopbar';
 import {AppFooter} from './AppFooter';
 import {AppMenu} from './AppMenu';
 import {AppProfile} from './AppProfile';
@@ -26,6 +26,7 @@ import '@fullcalendar/daygrid/main.css';
 import '@fullcalendar/timegrid/main.css';
 import './layout/layout.scss';
 import './App.scss';
+import {YoutubeV2} from "./components/view/YoutubeV2";
 
 class App extends Component {
 
@@ -118,6 +119,7 @@ class App extends Component {
 					{label: 'Sample Page', icon: 'pi pi-fw pi-th-large', to: '/sample'},
 					{label: 'Forms', icon: 'pi pi-fw pi-file', to: '/forms'},
 					{label: 'Data', icon: 'pi pi-fw pi-table', to: '/data'},
+					{label: 'Youtube', icon: 'pi pi-fw pi-table', to: '/youtube'},
 					{label: 'Panels', icon: 'pi pi-fw pi-list', to: '/panels'},
 					{label: 'Overlays', icon: 'pi pi-fw pi-clone', to: '/overlays'},
 					{label: 'Menus', icon: 'pi pi-fw pi-plus', to: '/menus'},
@@ -240,6 +242,7 @@ class App extends Component {
                     <Route path="/forms" component={FormsDemo} />
                     <Route path="/sample" component={SampleDemo} />
                     <Route path="/data" component={DataDemo} />
+                    <Route path="/youtube" component={YoutubeV2} />
                     <Route path="/panels" component={PanelsDemo} />
                     <Route path="/overlays" component={OverlaysDemo} />
                     <Route path="/menus" component={MenusDemo} />
