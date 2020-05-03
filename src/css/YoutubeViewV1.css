@@ -1,0 +1,18 @@
+
+.carousel-my {
+    height: 80%;
+    width: 80%;
+    padding-top: inherit;
+}
+
+.carousel-template-my {
+    height: 100%;
+    width: 100%;
+}
+
+
+
+.sidebar-my {
+    height: 30%;
+    background: azure;
+}
