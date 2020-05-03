@@ -2,16 +2,23 @@ import React from "react";
 import youtube from "../apis/youtubeapi";
 import {Carousel} from 'primereact/carousel'
 import ReactPlayer from "react-player";
+import {CarService} from "../../service/CarService";
+import {Button} from "primereact/button";
 
 
 export default class YoutubeV1 extends React.Component {
 
     constructor(props) {
         super(props);
+       this.bottom = false;
+       if (props.isBottom){
+           this.bottom = props.isBottom;
+       }
         this.state = {
             videos: [],
+            cars: [],
             isHovering: false,
-
+            isBottom:this.bottom,
 
             url: null,
             pip: false,
@@ -52,10 +59,37 @@ export default class YoutubeV1 extends React.Component {
         this.handleMouseHover = this.handleMouseHover.bind(this);
         this.handleMouseHoverLeave = this.handleMouseHoverLeave.bind(this);
 
+        this.carservice = new CarService();
+        this.carTemplate = this.carTemplate.bind(this);
+
+
     }
 
     componentDidMount() {
-        this.handleSubmit('BMW');
+        this.handleSubmit('AUDI');
+        // this.carservice.getCarsSmall().then(data => this.setState({cars: data}));
+    }
+
+    carTemplate(car) {
+        return (
+            <div className="car-details">
+                <div className="p-grid p-nogutter">
+                    <div className="p-col-12">
+                        <img src={`assets/demo/images/car/${car.brand}.png`} alt={car.brand}/>
+                    </div>
+                    <div className="p-col-12 car-data">
+                        <div className="car-title">{car.brand}</div>
+                        <div className="car-subtitle">{car.year} | {car.color}</div>
+
+                        <div className="car-buttons">
+                            <Button icon="pi pi-search" className="p-button-secondary"/>
+                            <Button icon="pi pi-star" className="p-button-secondary"/>
+                            <Button icon="pi pi-cog" className="p-button-secondary"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
     }
 
 
@@ -64,8 +98,9 @@ export default class YoutubeV1 extends React.Component {
             <div className="car-details">
                 <div className="p-grid p-nogutter">
                     <div className="p-col-12">
-                        <img src={video.snippet.thumbnails.medium.url} alt={video.snippet.description}
-                             onClick={() => setTimeout(this.handleVideoSelect(video), 1)}/>
+                        <img src={video.snippet.thumbnails.default.url} alt={video.snippet.description}
+                             onClick={() => setTimeout(this.handleVideoSelect(video), 1)}
+                        />
                     </div>
                 </div>
             </div>
@@ -76,12 +111,16 @@ export default class YoutubeV1 extends React.Component {
     handleSubmit = async (termFromSearchBar) => {
         const response = await youtube.get('/search', {
             params: {
-                q: termFromSearchBar
+                q: termFromSearchBar,
+                maxResults: 20
             }
         }).then(res => {
             this.setState({
                 videos: res.data.items
             });
+            let random = this.random(0, this.state.videos.length);
+            console.log("RRRRRRRAAAAAAAAAAAAANNN",random);
+            this.handleVideoSelect(this.state.videos[random]);
         }).catch(error => {
             console.log(JSON.stringify(error));
             if (error.response.status === 401) {
@@ -102,19 +141,22 @@ export default class YoutubeV1 extends React.Component {
         if (video === null) {
             return;
         }
-        this.setState({url:"https://www.youtube.com/watch?v=" + video.id.videoId})
+        this.setState({url: "https://www.youtube.com/watch?v=" + video.id.videoId})
     };
 
     ref = player => {
         this.player = player
     };
 
-    getVideoDetail() {
-        const { url, playing, controls, light, volume, muted, loop, played, loaded, duration, playbackRate, pip } = this.state;
+    getVideoDetail(isBottom) {
+        if (isBottom){
+            return ;
+        }
+        const {url, playing, controls, light, volume, muted, loop, played, loaded, duration, playbackRate, pip} = this.state;
         if (url === null) {
             return;
         }
-        return (<div
+        return (<div  style={{height:"100%"}}
                 onMouseEnter={this.handleMouseHoverLeave}
                 onMouseLeave={this.handleMouseHover}>
                 <ReactPlayer
@@ -158,14 +200,17 @@ export default class YoutubeV1 extends React.Component {
         console.log("HOOOOWWWERRRR:", this.state.isHovering);
     }
 
+    random(mn, mx) {
+        return Math.floor(Math.random() * (mx - mn) + mn)-1;
+    }
 
 
     handlePlayPause = () => {
-        this.setState({ playing: !this.state.playing })
+        this.setState({playing: !this.state.playing})
     };
 
     handleStop = () => {
-        this.setState({ url: null, playing: false })
+        this.setState({url: null, playing: false})
     };
 
     handleToggleControls = () => {
@@ -177,59 +222,59 @@ export default class YoutubeV1 extends React.Component {
     };
 
     handleToggleLight = () => {
-        this.setState({ light: !this.state.light })
+        this.setState({light: !this.state.light})
     };
 
     handleToggleLoop = () => {
-        this.setState({ loop: !this.state.loop })
+        this.setState({loop: !this.state.loop})
     };
 
     handleVolumeChange = e => {
-        this.setState({ volume: parseFloat(e.target.value) })
+        this.setState({volume: parseFloat(e.target.value)})
     };
 
     handleToggleMuted = () => {
-        this.setState({ muted: !this.state.muted })
+        this.setState({muted: !this.state.muted})
     };
 
     handleSetPlaybackRate = e => {
-        this.setState({ playbackRate: parseFloat(e.target.value) })
+        this.setState({playbackRate: parseFloat(e.target.value)})
     };
 
     handleTogglePIP = () => {
-        this.setState({ pip: !this.state.pip })
+        this.setState({pip: !this.state.pip})
     };
 
     handlePlay = () => {
-        console.log('onPlay')
-        this.setState({ playing: true })
+        console.log('onPlay');
+        this.setState({playing: true})
     };
 
     handleEnablePIP = () => {
-        console.log('onEnablePIP')
-        this.setState({ pip: true })
+        console.log('onEnablePIP');
+        this.setState({pip: true})
     };
 
     handleDisablePIP = () => {
-        console.log('onDisablePIP')
-        this.setState({ pip: false })
+        console.log('onDisablePIP');
+        this.setState({pip: false})
     };
 
     handlePause = () => {
-        console.log('onPause')
-        this.setState({ playing: false })
+        console.log('onPause');
+        this.setState({playing: false})
     };
 
     handleSeekMouseDown = e => {
-        this.setState({ seeking: true })
+        this.setState({seeking: true})
     };
 
     handleSeekChange = e => {
-        this.setState({ played: parseFloat(e.target.value) })
+        this.setState({played: parseFloat(e.target.value)})
     };
 
     handleSeekMouseUp = e => {
-        this.setState({ seeking: false })
+        this.setState({seeking: false})
         this.player.seekTo(parseFloat(e.target.value))
     };
 
@@ -243,40 +288,32 @@ export default class YoutubeV1 extends React.Component {
 
     handleEnded = () => {
         console.log('onEnded')
-        this.setState({ playing: this.state.loop })
+        this.setState({playing: this.state.loop})
     };
 
     handleDuration = (duration) => {
         console.log('onDuration', duration)
-        this.setState({ duration })
+        this.setState({duration})
     };
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     render() {
         const customHeader = <h2>Selected Videos</h2>;
         console.log("Render:", this.props.video, this.props.loginGoogle);
         return (
-            <div className="carousel-demo">
-                <div className="content-section implementation">
-                    <Carousel value={this.state.videos} itemTemplate={this.videoTemplate} numVisible={3} numScroll={1}
-                              className="custom-carousel"
-                              responsive={this.responsiveSettings} header={customHeader} circular={true}
-                              autoplayInterval={5000}/>
+            <div  style={{height:"100%"}}>
+                {this.getVideoDetail(!this.state.isBottom)}
+                <div className="carousel-demo">
+                    <div className="content-section implementation">
+                        <Carousel value={this.state.videos} itemTemplate={this.videoTemplate} numVisible={5}
+                                  numScroll={1}
+                                  className="custom-carousel"
+                                  header={customHeader} circular={true}
+                                  autoplayInterval={5000}
+                                  responsive={this.responsiveSettings}/>
+                    </div>
                 </div>
-                {this.getVideoDetail()}
+                {this.getVideoDetail(this.state.isBottom)}
             </div>
         );
     }

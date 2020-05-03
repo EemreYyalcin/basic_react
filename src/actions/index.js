@@ -6,10 +6,10 @@ export const signState = (auth) => {
 };
 
 
-export const videoSelect = (selectedVideo) => {
+export const loadVideo = (index, urls) => {
     return {
-        type: 'VIDEO_SELECT',
-        payload: selectedVideo
+        type: 'LOAD_VIDEO',
+        payload: {index, urls}
     };
 };
 

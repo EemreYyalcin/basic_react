@@ -4,5 +4,5 @@ import {VideoReducer} from "./VideoReducer";
 
 export default combineReducers({
     loginGoogle: GoogleApiReducer,
-    video: VideoReducer
+    videoUrls: VideoReducer
 });

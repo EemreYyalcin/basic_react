@@ -8,7 +8,7 @@ class GoogleApi extends React.Component {
         window.gapi.load('client:auth2', () => {
             window.gapi.client.init({
                 clientId: '107196056797-aceeuebaa02blos47cr1c4q63dj6t2ms.apps.googleusercontent.com',
-                scope: 'email'
+                scope: 'email https://www.googleapis.com/auth/youtube.readonly'
             }).then(() => {
                 this.auth = window.gapi.auth2.getAuthInstance();
                 // this.onAuthChange(this.auth);
@@ -24,23 +24,17 @@ class GoogleApi extends React.Component {
         this.props.signState(auth);
     };
 
-    // onAuthChange = (auth) => {
-    //     console.log("click 0 " + auth);
-    //     // if (auth) {
-    //     //     this.props.signState(true, auth.currentUser);
-    //     //     return;
-    //     // }
-    //     this.props.signState(auth);
-    // };
 
     onSignInClick = () => {
         console.log("click 1");
         this.auth.signIn();
+        this.props.signState(this.auth);
     };
 
     onSignOutClick = () => {
         console.log("click 2");
         this.auth.signOut();
+        this.props.signState(this.auth);
     };
 
     renderAuthButton() {

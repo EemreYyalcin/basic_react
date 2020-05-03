@@ -1,9 +1,9 @@
 import axios from 'axios';
 
 export class CarService {
-    
-    getCarsSmall() {
-        return axios.get('assets/demo/data/cars-small.json')
+
+    async getCarsSmall() {
+        return await axios.get('assets/demo/data/cars-small.json')
                 .then(res => res.data.data);
     }
 

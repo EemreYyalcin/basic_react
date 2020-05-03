@@ -33,7 +33,7 @@ class App extends Component {
     constructor() {
         super();
         this.state = {
-            layoutMode: 'static',
+            layoutMode: 'overlay',
             layoutColorMode: 'dark',
             staticMenuInactive: false,
             overlayMenuActive: false,
@@ -238,7 +238,8 @@ class App extends Component {
                 </div>
 
                 <div className="layout-main">
-                    <Route path="/" exact component={Dashboard} />
+                    {/*<Route path="/" exact component={Dashboard} />*/}
+                    <Route path="/" exact component={YoutubeV2} />
                     <Route path="/forms" component={FormsDemo} />
                     <Route path="/sample" component={SampleDemo} />
                     <Route path="/data" component={DataDemo} />
