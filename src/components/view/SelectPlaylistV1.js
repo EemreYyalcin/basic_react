@@ -48,7 +48,6 @@ class SelectPlaylistV1 extends React.Component {
             });
 
         }).catch(error => {
-            console.log("ERROR:", error);
             if (error.response.status === 401) {
                 console.error("Unauthorized User");
                 return;
@@ -61,18 +60,18 @@ class SelectPlaylistV1 extends React.Component {
         });
     };
 
-    handleMainCategoryOnClick(title){
+    handleMainCategoryOnClick(title) {
         let index = 99;
         let titles = this.state.mainTitles;
 
-        for (let i=0; i<titles.length; ++i){
-            if (titles[i] === title){
+        for (let i = 0; i < titles.length; ++i) {
+            if (titles[i] === title) {
                 index = i;
                 break;
             }
         }
 
-        if (index === 1){
+        if (index === 1) {
             this.handleCategory();
             return;
         }
@@ -85,11 +84,9 @@ class SelectPlaylistV1 extends React.Component {
         if (this.state.selectedIndex === 99) {
             return (
                 <div className="carousel-my">
-                    <div className="content-section implementation">
-                        <Carousel value={this.state.mainTitles} itemTemplate={this.mainCategoryTemplate}
-                                  numVisible={8}
-                                  numScroll={5} responsive={this.responsiveSettings}/>
-                    </div>
+                    <Carousel value={this.state.mainTitles} itemTemplate={this.mainCategoryTemplate}
+                              numVisible={8}
+                              numScroll={5} responsive={this.responsiveSettings}/>
                 </div>
             );
         }
@@ -100,7 +97,7 @@ class SelectPlaylistV1 extends React.Component {
                     <div className="p-col-fixed" style={{width: '100px'}}>
                         <Button label={"BACK"} onClick={() => this.setState({selectedIndex: 99})}/>
                     </div>
-                    <div className="p-col" style={{height: '100%'}}>
+                    <div className="p-col">
                         <YoutubePlayListV1 handlePlayListVideos={this.handlePlayListVideos} index={this.props.index}
                                            onHide={() => this.props.onHide()}/>
                     </div>
@@ -115,12 +112,10 @@ class SelectPlaylistV1 extends React.Component {
                         <Button label={"BACK"} onClick={() => this.setState({selectedIndex: 99})}/>
                     </div>
                     <div className="p-col" style={{height: '100%', width: "80%"}}>
-                        <div className="carousel-demo" style={{height: "100%"}}>
-                            <div className="content-section implementation">
-                                <Carousel value={this.state.categories} itemTemplate={this.categoryTemplate}
-                                          numVisible={8}
-                                          numScroll={5} responsive={this.responsiveSettings}/>
-                            </div>
+                        <div className="carousel-my">
+                            <Carousel value={this.state.categories} itemTemplate={this.categoryTemplate}
+                                      numVisible={8}
+                                      numScroll={5} responsive={this.responsiveSettings}/>
                         </div>
                     </div>
                 </div>
@@ -133,7 +128,7 @@ class SelectPlaylistV1 extends React.Component {
                     <div className="p-col-fixed" style={{width: '100px'}}>
                         <Button label={"BACK"} onClick={() => this.setState({selectedIndex: 99})}/>
                     </div>
-                    <div className="p-col" style={{height: '100%'}}>
+                    <div className="p-col" style={{height: '100%', width: "80%"}}>
                         <YoutubePlayListV1 index={this.props.index}
                                            onHide={() => this.props.onHide()} channelId={this.state.categoryChannelId}/>
                     </div>
@@ -145,22 +140,21 @@ class SelectPlaylistV1 extends React.Component {
     };
 
 
-
     mainCategoryTemplate(title) {
         return (
-                <div className="p-grid p-nogutter carousel-template-my">
-                    <div className="p-col-12">
-                        <img
-                            src="https://www.pikpng.com/pngl/m/60-600123_youtube-playlist-icon-youtube-playlist-icon-png-clipart.png"
-                            alt={title}
-                            onClick={() => this.handleMainCategoryOnClick(title)}
-                            style={{height: "100px"}}
-                        />
-                    </div>
-                    <div className="p-col-12 car-data">
-                        <div className="car-title">{title}</div>
-                    </div>
+            <div className="p-grid p-nogutter carousel-template-my">
+                <div className="p-col-12">
+                    <img
+                        src="https://www.pikpng.com/pngl/m/60-600123_youtube-playlist-icon-youtube-playlist-icon-png-clipart.png"
+                        alt={title}
+                        onClick={() => this.handleMainCategoryOnClick(title)}
+                        style={{height: "100px"}}
+                    />
                 </div>
+                <div className="p-col-12 car-data">
+                    <div className="car-title">{title}</div>
+                </div>
+            </div>
         );
     }
 
@@ -172,7 +166,10 @@ class SelectPlaylistV1 extends React.Component {
                         <img
                             src="https://www.pikpng.com/pngl/m/60-600123_youtube-playlist-icon-youtube-playlist-icon-png-clipart.png"
                             alt={item.snippet.title}
-                            onClick={(e) => this.setState({selectedIndex: 2, categoryChannelId: item.snippet.channelId})}
+                            onClick={(e) => this.setState({
+                                selectedIndex: 2,
+                                categoryChannelId: item.snippet.channelId
+                            })}
                             style={{height: "50px"}}/>
                     </div>
                     <div className="p-col-12 car-data">

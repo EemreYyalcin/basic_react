@@ -1,18 +1,24 @@
 
 .carousel-my {
-    height: 80%;
-    width: 80%;
-    padding-top: inherit;
+    height: 80px;
+    width: 90%;
+    /*display: flex;*/
 }
 
 .carousel-template-my {
-    height: 100%;
-    width: 100%;
+    width: 40px;
+}
+
+.carousel-template-text-my {
+    padding: 5px;
+    width: 80px;
+    height: 60px;
+    /*text-align: justify;*/
 }
 
 
 
 .sidebar-my {
-    height: 30%;
+    height: 25%;
     background: azure;
 }

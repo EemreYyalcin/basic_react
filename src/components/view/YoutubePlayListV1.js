@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import youtube from "../apis/youtubeapi";
 import {Carousel} from 'primereact/carousel';
 import {loadVideo} from "../../actions";
+import '../../css/YoutubeViewV1.css'
 
 
 class YoutubePlayListV1 extends React.Component {
@@ -99,6 +100,7 @@ class YoutubePlayListV1 extends React.Component {
             return;
         }
         console.log("LOGINGOOGLE:", token, token.access_token, token.token_type);
+        console.log("CHANNELID:", channelId);
         await youtube.get('/search', {
             params: {
                 maxResults: 40,
@@ -113,6 +115,7 @@ class YoutubePlayListV1 extends React.Component {
             this.setState({
                 playlist: res.data.items
             });
+            console.log("Category Playlist:", this.state.playlist);
 
         }).catch(error => {
             console.log("ERROR:", error);
@@ -182,18 +185,20 @@ class YoutubePlayListV1 extends React.Component {
 
 
     listTemplate(item) {
+        let fixTitle = item.snippet.title;
+        if (fixTitle.length > 30){
+            fixTitle = fixTitle.substring(0, 30);
+        }
         return (
-            <div className="car-details"  style={{width: "25px"}}>
-                <div className="p-grid p-nogutter">
+                <div className="p-grid p-nogutter carousel-template-my">
                     <div className="p-col-12">
                         <img src={item.snippet.thumbnails.default.url} alt={item.snippet.title}
                              onClick={(e) => this.handleSelectedPlaylist(item)}/>
                     </div>
-                    <div className="p-col-12 car-data">
-                        <div className="car-title">{item.snippet.title}</div>
+                    <div className="p-col-12 carousel-template-text-my">
+                        {fixTitle}
                     </div>
                 </div>
-            </div>
         );
     }
 
@@ -208,12 +213,11 @@ class YoutubePlayListV1 extends React.Component {
         } else {
             this.handleSubmit();
         }
+
         return (
-            <div className="carousel-demo" style={{height: "100%"}}>
-                <div className="content-section implementation">
+            <div className="carousel-my">
                     <Carousel value={this.state.playlist} itemTemplate={this.listTemplate} numVisible={8} numScroll={1}
                               responsive={this.responsiveSettings}/>
-                </div>
             </div>
         );
     };

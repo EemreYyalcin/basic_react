@@ -7,7 +7,7 @@ class GoogleApi extends React.Component {
     componentDidMount() {
         window.gapi.load('client:auth2', () => {
             window.gapi.client.init({
-                clientId: '107196056797-aceeuebaa02blos47cr1c4q63dj6t2ms.apps.googleusercontent.com',
+                clientId: 'OAUTH_API_KEY',
                 scope: 'email https://www.googleapis.com/auth/youtube.readonly'
             }).then(() => {
                 this.auth = window.gapi.auth2.getAuthInstance();
@@ -19,20 +19,16 @@ class GoogleApi extends React.Component {
     }
 
     onAuthObject = (auth) => {
-        console.log(auth);
-        console.log("click a " + auth);
         this.props.signState(auth);
     };
 
 
     onSignInClick = () => {
-        console.log("click 1");
         this.auth.signIn();
         this.props.signState(this.auth);
     };
 
     onSignOutClick = () => {
-        console.log("click 2");
         this.auth.signOut();
         this.props.signState(this.auth);
     };
@@ -44,9 +40,6 @@ class GoogleApi extends React.Component {
                 <span className="layout-topbar-icon pi pi-sign-in"/>
             </button>);
         }
-        console.log("renderAuthButton " + "ss " + JSON.stringify(this.props.loginGoogle.auth.currentUser));
-        console.log("renderAuthButton " + "ss " + JSON.stringify(this.props.loginGoogle.auth.isSignedIn));
-        console.log("renderAuthButton " + "ss " + JSON.stringify(this.props.loginGoogle.auth.isSignedIn.ie));
         if (this.props.loginGoogle.auth.isSignedIn.ie) {
             return (<button className="p-link" onClick={this.onSignOutClick}>
                 <span className="layout-topbar-item-text">User</span>
